@@ -1,26 +1,30 @@
 # Rossmann-Sales-Prediction
-Sales Prediction : Predicting sales of a major store chain Rossmann
+In this project we have been given with the past data of major store chain Rossmann Drug stores and we have to build a model to predict the future sales. 
 
-Problem Description:
-Rossmann operates over 3,000 drug stores in 7 European countries. Currently, Rossmann store managers are tasked with predicting their daily sales for up to six weeks in advance. Store sales are influenced by many factors, including promotions, competition, school and state holidays, seasonality, and locality. With thousands of individual managers predicting sales based on their unique circumstances, the accuracy of results can be quite varied. You are provided with historical sales data for 1,115 Rossmann stores. The task is to forecast the "Sales" column for the test set. Note that some stores in the dataset were temporarily closed for refurbishment.
+Sales Prediction is key aspect for all retail stores to maintain the right amount of production and inventory so that there is no shortage of goods and inventory costs are also optimized. 
 
-Data Description
-Rossmann Stores Data.csv - historical data including Sales
-store.csv - supplemental information about the stores
-Data fields
-Most of the fields are self-explanatory. The following are descriptions for those that aren't.
-Id - an Id that represents a (Store, Date) duple within the test set
-Store - a unique Id for each store
-Sales - the turnover for any given day (this is what you are predicting)
-Customers - the number of customers on a given day
-Open - an indicator for whether the store was open: 0 = closed, 1 = open
-StateHoliday - indicates a state holiday. Normally all stores, with few exceptions, are closed on state holidays. Note that all schools are closed on public holidays and weekends. a = public holiday, b = Easter holiday, c = Christmas, 0 = None
-SchoolHoliday - indicates if the (Store, Date) was affected by the closure of public schools
-StoreType - differentiates between 4 different store models: a, b, c, d
-Assortment - describes an assortment level: a = basic, b = extra, c = extended
-CompetitionDistance - distance in meters to the nearest competitor store
-CompetitionOpenSince[Month/Year] - gives the approximate year and month of the time the nearest competitor was opened
-Promo - indicates whether a store is running a promo on that day
-Promo2 - Promo2 is a continuing and consecutive promotion for some stores: 0 = store is not participating, 1 = store is participating
-Promo2Since[Year/Week] - describes the year and calendar week when the store started participating in Promo2
-PromoInterval - describes the consecutive intervals Promo2 is started, naming the months the promotion is started anew. E.g. "Feb,May,Aug,Nov" means each round starts in February, May, August, November of any given year for that store
+There were 2 datasets one with the sales data and other with metadata of the 1115 unique stores. Shape of datasets: 
+1.	Sales Data : 1017209 rows x 9 columns
+2.	Store Data : 1115 rows x 10 columns
+
+Data Cleaning: There are no null values in the sales data however there are few columns with null values in store data. Techniques like dropping the columns, filling the null values with mean values was used. A unique approach of filling the null values with latest date for date column was used, this helped in merging the datasets without altering the meaning provided by the data. 
+
+Merging Datasets: As there are 2 data sets, it was merged on the common column Store Id. Left join was used to merge the dataset. The Shape of our final data is 1017209 rows x 14 columns
+
+Exploratory Data Analysis was performed to obtain the insights of our dependent variable Sales. Various graphs were constructed comparing the Sales column with other columns. List of insights were obtained. 
+
+Time Series Analysis was performed using seasonal_decompose from statsmodels.tsa.seasonal module. The graph of trend, seasonality and residual was plotted.
+
+Feature Engineering - 1. One encoding and Label encoding was applied wherever necessary. 2.MinMaxScaler was used to scale the independent features. 3. Lastly month, year and day columns were extracted from the DateTime column. 
+
+Modelling – Totally 6 models were build, hyperparameter tuning was performed on 2 models and cross validation was performed on 3 models. The list of models are:
+
+1.	Linear Regression
+2.	Lasso Regression
+3.	Ridge Regression
+4.	XGBoost Regression
+5.	Stochastic Gradient Descent Regression
+6.	Random Forest Regression
+
+
+Conclusion: Random Forest Regressor model performs the best with an R2 Score of 0.968 with the best parameter of n_estimators 25. However, we can us estimator of 10 has it almost the same accuracy but reduces the computational time. Next the XGBoost gives the best with the R2 Score of 0.88.
